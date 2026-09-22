@@ -1,3 +1,20 @@
-# Local Netlify folder
-.netlify
+# dependências
+node_modules
+
+# variáveis de ambiente (senhas, URL do banco)
 .env
+.env.*
+!.env.example
+
+# pasta local do Netlify CLI
+.netlify
+
+# build do front
+dist
+
+# logs
+*.log
+
+# sistema e editor
+.DS_Store
+*.swp
