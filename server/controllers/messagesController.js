@@ -1,5 +1,5 @@
-import { fetchPedradas } from "../services/messagesService.js";
-import { fetchMemberPedradas } from "../services/messagesService";
+import { fetchPedradas, fetchMemberPedradas } from "../services/messagesService.js";
+import { MEMBERS } from "../config/members.js"; 
 
 export const fetchPedradasController = async (req, res) => {
   const result = await fetchPedradas();
@@ -14,6 +14,12 @@ export const fetchPedradasController = async (req, res) => {
 }
 
 export const fetchByMemberController = async (req, res) => {
+  const { member } = req.query;
+
+  if(member && !MEMBERS.includes(member)) {
+    res.status(400).json({error: "Membro não encontrado"})
+  }
+
   const result = await fetchMemberPedradas();
 
   if(result && result.error) {
