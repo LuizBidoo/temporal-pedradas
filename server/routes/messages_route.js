@@ -10,12 +10,14 @@ if(!fetchPedradasController) {
 
 
 // Get Messages pra montar o leaderboard
-messagesRouter.get("/messages", fetchPedradasController);
+messagesRouter.get("/pedradas", fetchPedradasController);
 // Post Messages pra submissao
 //messagesRouter.post("/messages");
 // Get por membro do temporal
-messagesRouter.get("/messages/:member", fetchByMemberController);
-// upvotes
+messagesRouter.get("/pedradas/member/:member", fetchByMemberController);
+// makeUpvote
 //messagesRouter.post("/messages/:id/upvote");
+// makeUpload
+//messagesRouter.post("/uploads");
 
 export default messagesRouter;
