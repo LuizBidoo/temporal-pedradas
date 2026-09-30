@@ -1,4 +1,4 @@
-import { fetchPedradas, fetchMemberPedradas } from "../services/messagesService.js";
+import { fetchPedradas, fetchMemberPedradas, createPedrada } from "../services/messagesService.js";
 import { MEMBERS } from "../config/members.js"; 
 
 export const fetchPedradasController = async (req, res) => {
@@ -29,4 +29,13 @@ export const fetchByMemberController = async (req, res) => {
 
   return res.status(200).json(result.data);
   
+}
+
+export const createPedradaController = async (req, res) => { 
+  try {
+    const id = await createPedrada(req.body)
+    res.status(201).json({ message: `Pedrada criada com id: ${id}`})
+  } catch(e) {
+    res.status(500).json({ message: "Erro ao criar a pedrada", error: e})
+  }
 }

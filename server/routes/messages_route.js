@@ -1,5 +1,7 @@
 import express from "express";
-import { fetchPedradasController, fetchByMemberController } from "../controllers/messagesController.js";
+import { fetchPedradasController, fetchByMemberController, createPedradaController } from "../controllers/messagesController.js";
+import { validate } from "../middlewares/validate.js";
+import { newPedradaSchema } from "../validators/pedrada.validator.js";
 // mensagem terá: mensagem, usuário que mandou, data no grupo, upvotes
 
 const messagesRouter = express.Router();
@@ -11,8 +13,7 @@ if(!fetchPedradasController) {
 
 // Get Messages pra montar o leaderboard
 messagesRouter.get("/pedradas", fetchPedradasController);
-// Post Messages pra submissao
-//messagesRouter.post("/messages");
+messagesRouter.post("/pedradas", validate(newPedradaSchema), createPedradaController);
 // Get por membro do temporal
 messagesRouter.get("/pedradas/member/:member", fetchByMemberController);
 // makeUpvote

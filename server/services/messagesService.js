@@ -58,10 +58,30 @@ export async function fetchMemberPedradas(member) {
 
     return { error: e.message || e, status: 500};
   }
-}
+} 
 
-export async function createPedrada(newPost) { 
-  //todo
+export async function createPedrada({ author, messages }) {
+  const rows = messages.map((m, i) => ({
+    position: i + 1,
+    author: m.author,
+    kind: m.kind,
+    content: m.content ?? null,
+    media_key: m.mediaKey ?? null,
+    media_type: m.mediaType ?? null,
+  }));
+
+  const result = await sql`
+    with p as (
+      insert into posts (author) values (${author}) returning id
+    )
+    insert into messages (post_id, position, author, kind, content, media_key, media_type)
+    select p.id, m.position, m.author, m.kind, m.content, m.media_key, m.media_type
+    from p, jsonb_to_recordset(${JSON.stringify(rows)}::jsonb)
+      as m(position int, author text, kind text, content text, media_key text, media_type text)
+    returning post_id
+  `;
+
+  return result[0].post_id;
 }
 
 export async function makeUpvote(id) {
