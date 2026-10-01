@@ -17,16 +17,12 @@ export async function fetchPedradas() {
     order by p.upvotes desc, p.created_at desc
   `;
     
-    if(pedradas.length === 0) {
-      return { error: "Nenhuma pedrada encontrada", status: 404}
-    }
-    
     return { data: pedradas.map(toPost), error: null};
   
   } catch(e) {
-    console.log("erro ao fazer o fetch")
+    console.error("erro ao fazer o fetch", e)
     
-    return { error: e.message || e, status: 500 }
+    return { error: "Erro ao buscar as pedradas", status: 500 };
   }
 }
 
@@ -47,16 +43,11 @@ export async function fetchMemberPedradas(member) {
     order by p.upvotes desc, p.created_at desc
   `;
 
-   
-    if(pedradas.length === 0) {
-      return { error: "Nenhuma pedrada encontrada", status: 404}
-    }
-
-    return { data: pedradas, error: null }
+    return { data: pedradas.map(toPost), error: null }
   } catch(e) {
-    console.log("erro ao fazer o fetch")
+    console.error("erro ao fazer o fetch", e)
 
-    return { error: e.message || e, status: 500};
+    return { error: "Erro ao buscar as pedradas", status: 500 };
   }
 } 
 
