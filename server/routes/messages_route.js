@@ -1,7 +1,7 @@
 import express from "express";
-import { fetchPedradasController, fetchByMemberController, createPedradaController } from "../controllers/messagesController.js";
+import { fetchPedradasController, fetchByMemberController, createPedradaController, makeUpvoteController } from "../controllers/messagesController.js";
 import { validate } from "../middlewares/validate.js";
-import { newPedradaSchema } from "../validators/pedrada.validator.js";
+import { newPedradaSchema, paramsSchema } from "../validators/pedrada.validator.js";
 // mensagem terá: mensagem, usuário que mandou, data no grupo, upvotes
 
 const messagesRouter = express.Router();
@@ -17,7 +17,7 @@ messagesRouter.post("/pedradas", validate(newPedradaSchema), createPedradaContro
 // Get por membro do temporal
 messagesRouter.get("/pedradas/member/:member", fetchByMemberController);
 // makeUpvote
-//messagesRouter.post("/messages/:id/upvote");
+messagesRouter.post("/pedradas/:id/upvote", validate(paramsSchema, "params"), makeUpvoteController);
 // makeUpload
 //messagesRouter.post("/uploads");
 

@@ -1,4 +1,4 @@
-import { fetchPedradas, fetchMemberPedradas, createPedrada } from "../services/messagesService.js";
+import { fetchPedradas, fetchMemberPedradas, createPedrada, makeUpvote } from "../services/messagesService.js";
 import { MEMBERS } from "../config/members.js"; 
 
 export const fetchPedradasController = async (req, res) => {
@@ -39,4 +39,21 @@ export const createPedradaController = async (req, res) => {
     console.error("erro ao criar a pedrada", e)
     return res.status(500).json({ message: "Erro ao criar a pedrada" })
   }
+}
+
+export const makeUpvoteController = async (req, res) => {
+  const { id } = req.params;
+  
+  if(id < 0) {
+    return res.status(400).json({error: "ID não existente"})
+  }
+
+  const result = await makeUpvote(id);
+
+  if(result && result.error) {
+    const statusCode = typeof result.status == "number" ? result.status : 500;
+    return res.status(statusCode).json({ message: "Houve um erro na requisição", error: result.error})
+  }
+
+  return res.status(201).json({ message: `Upvote feito com sucesso`})
 }

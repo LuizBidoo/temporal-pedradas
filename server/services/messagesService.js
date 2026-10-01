@@ -76,7 +76,17 @@ export async function createPedrada({ author, messages }) {
 }
 
 export async function makeUpvote(id) {
-  //todo
+  try {
+    const result = await sql`
+    update posts 
+    set upvotes = upvotes + 1 
+    where id = ${id}
+    returning id`
+
+    return result
+  } catch(e) {
+    return { error: "Erro ao fazer o upvote", status: 500 };
+  }
 }
 
 export async function createUploadUrl(kind, mediaType) {
