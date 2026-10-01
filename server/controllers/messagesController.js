@@ -14,7 +14,7 @@ export const fetchPedradasController = async (req, res) => {
 }
 
 export const fetchByMemberController = async (req, res) => {
-  const { member } = req.query.member;
+  const { member } = req.params;
 
   if(member && !MEMBERS.includes(member)) {
     return res.status(400).json({error: "Membro não encontrado"})
@@ -36,6 +36,7 @@ export const createPedradaController = async (req, res) => {
     const id = await createPedrada(req.body)
     return res.status(201).json({ message: `Pedrada criada com id: ${id}`})
   } catch(e) {
-    return res.status(500).json({ message: "Erro ao criar a pedrada", error: e})
+    console.error("erro ao criar a pedrada", e)
+    return res.status(500).json({ message: "Erro ao criar a pedrada" })
   }
 }
