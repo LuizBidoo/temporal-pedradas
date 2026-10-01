@@ -5,8 +5,8 @@ export const fetchPedradasController = async (req, res) => {
   const result = await fetchPedradas();
 
   if(result && result.error) {
-    const statusCode = typeof result.status == "number" ? result.status : "500";
-    res.status(statusCode).json({ message: "Houve um problema na requisição", error: result.error});
+    const statusCode = typeof result.status == "number" ? result.status : 500;
+    return res.status(statusCode).json({ message: "Houve um problema na requisição", error: result.error});
   }
 
   return res.status(200).json(result.data);
@@ -14,17 +14,17 @@ export const fetchPedradasController = async (req, res) => {
 }
 
 export const fetchByMemberController = async (req, res) => {
-  const { member } = req.query;
+  const { member } = req.query.member;
 
   if(member && !MEMBERS.includes(member)) {
-    res.status(400).json({error: "Membro não encontrado"})
+    return res.status(400).json({error: "Membro não encontrado"})
   }
 
-  const result = await fetchMemberPedradas();
+  const result = await fetchMemberPedradas(member);
 
   if(result && result.error) {
-    const statusCode = typeof result.status == "number" ? result.status : "500";
-    res.status(statusCode).json({ message: "Houve um problema na requisição", error: result.error});
+    const statusCode = typeof result.status == "number" ? result.status : 500;
+    return res.status(statusCode).json({ message: "Houve um problema na requisição", error: result.error});
   }
 
   return res.status(200).json(result.data);
@@ -34,8 +34,8 @@ export const fetchByMemberController = async (req, res) => {
 export const createPedradaController = async (req, res) => { 
   try {
     const id = await createPedrada(req.body)
-    res.status(201).json({ message: `Pedrada criada com id: ${id}`})
+    return res.status(201).json({ message: `Pedrada criada com id: ${id}`})
   } catch(e) {
-    res.status(500).json({ message: "Erro ao criar a pedrada", error: e})
+    return res.status(500).json({ message: "Erro ao criar a pedrada", error: e})
   }
 }
