@@ -36,3 +36,7 @@ export const newPedradaSchema = z.object({
     .min(1, "a pedrada precisa de pelo menos uma mensagem")
     .max(30, "pedrada longa demais"),
 });
+
+export const paramsSchema = z.object({
+  id: z.coerce.number().int().positive(),
+});
